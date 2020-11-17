@@ -7,4 +7,4 @@ java -Djarmode=layertools -jar ./target/$PROJECT_NAME*.jar extract
 # Sign in to Docker
 echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 # Build the Docker Image
-docker build -f travis.Dockerfile -t "$PROJECT_NAME" .
+docker build -f Dockerfile -t "$PROJECT_NAME" .
