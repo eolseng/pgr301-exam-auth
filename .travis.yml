@@ -14,7 +14,7 @@ cache:
 
 before_install:
   # Update Docker to latest version
-  - bash ./scripts/docker_update
+  - bash ./scripts/update_docker
   # Install Google Cloud SDK if not cached
   - bash ./scripts/install_gcloud
   # Use the downloaded SDK instead of pre-installed old version on Travis-CI
