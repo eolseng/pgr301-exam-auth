@@ -4,7 +4,11 @@ jdk: openjdk11
 services:
   - docker
 
-# Caches Maven dependencies, Google Cloud SDK and Terraform
+env:
+  global:
+    # Disable Google Cloud SDK prompts
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
 cache:
   directories:
     - ".autoconf"
