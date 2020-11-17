@@ -8,3 +8,8 @@ java -Djarmode=layertools -jar ./target/$PROJECT_NAME*.jar extract
 echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 # Build the Docker Image
 docker build -f Dockerfile -t "$PROJECT_NAME" .
+# Tag the image
+docker tag "$PROJECT_NAME" "$DOCKER_USERNAME"/"$PROJECT_NAME":latest
+docker tag "$PROJECT_NAME" "$DOCKER_USERNAME"/"$PROJECT_NAME":"$TRAVIS_COMMIT"
+# Push the image - pushes all tags
+docker push "$DOCKER_USERNAME"/"$PROJECT_NAME"
