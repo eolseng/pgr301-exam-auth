@@ -28,7 +28,7 @@ RUN java -Djarmode=layertools -jar ${JAR_FILE} extract
 ##############################
 ### PRODUCTION IMAGE STAGE ###
 ##############################
-# Loads a Slim Alpine JDK11 Base Image for smallest possible image size.
+# Loads a Slim Alpine JDK11 Base Image
 FROM adoptopenjdk/openjdk11:alpine-slim
 WORKDIR application
 # Run the application with non-Root Privileges for security reasons.

@@ -10,6 +10,6 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     database: h2
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create-drop

@@ -11,3 +11,6 @@ cache:
     - "$HOME/.m2"
     - "$HOME/google-cloud-sdk/"
     - "$HOME/bin/terraform/"
+
+before_install:
+  - docker --version
