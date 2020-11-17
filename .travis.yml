@@ -6,6 +6,8 @@ services:
 
 env:
   global:
+    # Set the name of the Docker Image
+    - PROJECT_NAME=pgr301-exam-auth
     # Disable Google Cloud SDK prompts
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
     # Enable DockerBuildkit
@@ -28,7 +30,7 @@ before_install:
 
 deploy:
   provider: script
-  script: bash scripts/deploy
+  script: bash ./scripts/deploy
   on:
     # Only deploy if on stage 'master'
     branch: master
