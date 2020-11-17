@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+# Download and install GCloud if it does not exist in cache.
+# NB.: Does not have version control!
+echo "Setting up the Google Cloud SDK"
+if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then
+  echo "Not found in cache - downloading and installing"
+  rm -rf "$HOME"/google-cloud-sdk
+  curl https://sdk.cloud.google.com | bash &>/dev/null
+else
+  echo "Found in cache - continuing"
+fi
+echo "Done setting up the Google Cloud SDK"
