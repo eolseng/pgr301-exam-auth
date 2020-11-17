@@ -1,7 +1,4 @@
-# syntax = docker/dockerfile:experimental
-
 # This is a multi-stage Dockerfile for Spring Boot Applications made as a Layered Jar
-# It uses experimental features - see first line - and also needs DOCKER_BUILDKIT=1 enabled
 # Must have Docker version 18.09 or higher
 
 # Build the image with: DOCKER_BUILDKIT=1 docker build -f Dockerfile -t name:tag .
@@ -15,9 +12,8 @@ WORKDIR application
 # Copies over the POM-file for dependencies and the src-folder
 COPY pom.xml .
 COPY src src
-# Caches the /.m2-folder to cache Maven Dependencies. This is an experimental feature.
 # Builds the program with 'mvn install'. '-T 1C' makes the build multi-threded (1 thread / core) to speed it up.
-RUN --mount=type=cache,target=/root/.m2 mvn -T 1C install -DskipTests
+RUN mvn -T 1C install -DskipTests
 # Locates the generated .jar-file.
 # '*.jar' must be replaced with precise filename if multiple .jar-files exist after 'mvn install'.
 ARG JAR_FILE=target/*.jar
