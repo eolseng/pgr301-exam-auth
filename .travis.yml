@@ -20,6 +20,7 @@ before_install:
 - bash ./scripts/install_gcloud
 - source $HOME/google-cloud-sdk/path.bash.inc
 deploy:
+  skip_cleanup: true
   provider: script
   script: bash ./scripts/deploy
   on:
