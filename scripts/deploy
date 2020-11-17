@@ -6,10 +6,10 @@ docker --version
 java -Djarmode=layertools -jar ./target/$PROJECT_NAME*.jar extract
 # Sign in to Docker
 echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-# Build the Docker Image
-docker build -f Dockerfile -t "$PROJECT_NAME" .
-# Tag the image
-docker tag "$PROJECT_NAME" "$DOCKER_USERNAME"/"$PROJECT_NAME":latest
-docker tag "$PROJECT_NAME" "$DOCKER_USERNAME"/"$PROJECT_NAME":"$TRAVIS_COMMIT"
-# Push the image - pushes all tags
+# Build the Docker Image and tag it with both "latest" and current commit
+docker build -f Dockerfile \
+  --tag "$DOCKER_USERNAME"/"$PROJECT_NAME":latest \
+  --tag "$DOCKER_USERNAME"/"$PROJECT_NAME":"$TRAVIS_COMMIT" \
+  .
+# Push the image with all tags
 docker push "$DOCKER_USERNAME"/"$PROJECT_NAME"
