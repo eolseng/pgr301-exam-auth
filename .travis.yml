@@ -1,0 +1,13 @@
+language: java
+jdk: openjdk11
+
+services:
+  - docker
+
+# Caches Maven dependencies, Google Cloud SDK and Terraform
+cache:
+  directories:
+    - ".autoconf"
+    - "$HOME/.m2"
+    - "$HOME/google-cloud-sdk/"
+    - "$HOME/bin/terraform/"
