@@ -24,6 +24,6 @@ before_install:
   # Use the downloaded SDK instead of pre-installed old version on Travis-CI
   - source $HOME/google-cloud-sdk/path.bash.inc
 
-install:
-  # Run unit and integration tests
-  - mvn -T 1C verify
+script:
+  # Run the tests on one thread per core (-T 1C) and in Batch Mode (-B)
+  - mvn -T 1C test -B
