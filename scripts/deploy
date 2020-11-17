@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+# Build the Docker Image
+docker build -f Dockerfile -t "$PROJECT_NAME" .

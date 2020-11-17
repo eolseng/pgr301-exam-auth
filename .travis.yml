@@ -8,6 +8,8 @@ env:
   global:
     # Disable Google Cloud SDK prompts
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    # Enable DockerBuildkit
+    - DOCKER_BUILDKIT=1
 
 cache:
   directories:
@@ -24,10 +26,9 @@ before_install:
   # Use the downloaded SDK instead of pre-installed old version on Travis-CI
   - source $HOME/google-cloud-sdk/path.bash.inc
 
-install:
-  # Run the standard "install" script with '-T 1C' added for faster builds
-  - mvn -T 1C install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
-script:
-  # Run the standard "test" script with '-T 1C' added for faster builds
-  - mvn -T 1C test -B
+deploy:
+  provider: script
+  script: bash scripts/deploy
+  on:
+    # Only deploy if on stage 'master'
+    branch: master
