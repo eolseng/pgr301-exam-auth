@@ -12,5 +12,10 @@ cache:
     - "$HOME/google-cloud-sdk/"
     - "$HOME/bin/terraform/"
 
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 before_install:
   - docker --version
