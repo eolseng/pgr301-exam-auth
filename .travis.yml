@@ -1,24 +1,34 @@
 language: java
 jdk: openjdk11
+
 services:
-- docker
+  - docker
+
 env:
   global:
-  - PROJECT_NAME=pgr301-exam-auth
-  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-  - DOCKER_BUILDKIT=1
-  # Secrets used by Travis (DOCKER_USERNAME & DOCKER_PASSWORD)
-  - secure: GOAk5cbQQhr32TClvn920pb8RaNEeFiHG3XKuSCjfQsibf/LjoQZRfnGHJ4nvY0AKuSSZDOTEnWUcByEFxonMPa8xMmQj+6ax3y2IApIqANMcyRPhLfOfdxDP+5Lh7dNrU93OlVA2UtLqdzrVhTdKTAfRtaNQ83GrswA92WC02uBB62BbUnwb1RKdbvsAloGI8Jufb33W8E6/0GZw/rCMDZ0UX2fWl6InxTyIo8bdJZ97ZcX7kPAO3Ii+fcgnjDYtC1KjhbMV1onGOspr8qEau5uPVyFn1dOjIfCxKXmc4kG4jiDeUMqRjmV237/puwu5hidSm51wMpc0EdgR+ZiIHbG9hzn6i85ljAInXSUyCirCV47QwoP1y8qsd2/o76anXroci8I1NhlmwcfWS4vgum4TIcL0wV+5WdZGqAtFh9KB6L1FM5mjJximYHuMIET2aF6SX+sbniIFHH1fGVpeR+9GNdzskCxEP7RYKHt0sHv9Jye2Lt7rg8iJkpNb47xEYaAItNyclI7Z/jjOvNoh31D0LPwloZByNExSDoBIKz/ycQhgvVtFk3fhm7QVKZf9ZTMYqNEWM9PDAdYYzzR9rpGQZJ2qzlL/LJzXPKvC714Hn63qKYRnjnB/3nhmkFoXvhVbXyFVpyF9ezoQWi25kptR0mSVKkWrUI2a/cJ84c=
-  - secure: UzwtmV9Xd97Vl9hcMbyRwkdbZulExNxgbOzYjOhey5qtJrqp012ZXuMXReMwX5RTlqRg+jOFJNIFRTHnwaqa3FvCBxRY0yft24QiUEoenyxHTwaMlh8KEkZ+xnrfVJsLabN0zBtbtKhFtaJ2rsyOsSzH0mNwQ2xvcbqp/90r6CBfLWPrw5BaIMDZ0VGH5djsLKp7qp/7OQNksftKR61GFn8Tk97U+cSsAVLXrdz1veDlk4536wSrAShbFsyQfe88vPLOp/AaRO/VWmohpOQMt61IQnUaUrhEkf2nxinKjAjZAUftlYxQOjpbyp2UbMxkaqCziKlReFF0jKGPN7Ee298W/5QJyBAz9/OUvi8V3muwXupNMYMPdrPO2OEQgfll+wEQTGMjSJyhUo7wVz0u3nbdf09fi14LPTRI8jTQuifwt0nW/k2tCocZju5bBVSIreS4J/Nf79VEeuwSSa9T6cl2lgrrUPXbEtO8IIwEYlPcWVGaH2ulkEnOzWrVLKGvTAlC5IaLMju42+uCHL93cvmwkXlQF+Q6WdUI7ZfiEZiP735hxGWHPDx2ym3yM2cdSoZ3BpcFl+hnGBit2tzST5RdxQ+4dhwKz2as2o2Ejsjtw1mKHTm5rm+J9wUOQsdTI3Kjnk9abMi53XBD60UPkzTe4kaP2itxCwAJib4i1iI=
+    - PROJECT_NAME=pgr301-exam-auth
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    - DOCKER_BUILDKIT=1
+    # Secrets used by Travis (DOCKER_USERNAME & DOCKER_PASSWORD)
+    - secure: GOAk5cbQQhr32TClvn920pb8RaNEeFiHG3XKuSCjfQsibf/LjoQZRfnGHJ4nvY0AKuSSZDOTEnWUcByEFxonMPa8xMmQj+6ax3y2IApIqANMcyRPhLfOfdxDP+5Lh7dNrU93OlVA2UtLqdzrVhTdKTAfRtaNQ83GrswA92WC02uBB62BbUnwb1RKdbvsAloGI8Jufb33W8E6/0GZw/rCMDZ0UX2fWl6InxTyIo8bdJZ97ZcX7kPAO3Ii+fcgnjDYtC1KjhbMV1onGOspr8qEau5uPVyFn1dOjIfCxKXmc4kG4jiDeUMqRjmV237/puwu5hidSm51wMpc0EdgR+ZiIHbG9hzn6i85ljAInXSUyCirCV47QwoP1y8qsd2/o76anXroci8I1NhlmwcfWS4vgum4TIcL0wV+5WdZGqAtFh9KB6L1FM5mjJximYHuMIET2aF6SX+sbniIFHH1fGVpeR+9GNdzskCxEP7RYKHt0sHv9Jye2Lt7rg8iJkpNb47xEYaAItNyclI7Z/jjOvNoh31D0LPwloZByNExSDoBIKz/ycQhgvVtFk3fhm7QVKZf9ZTMYqNEWM9PDAdYYzzR9rpGQZJ2qzlL/LJzXPKvC714Hn63qKYRnjnB/3nhmkFoXvhVbXyFVpyF9ezoQWi25kptR0mSVKkWrUI2a/cJ84c=
+    - secure: UzwtmV9Xd97Vl9hcMbyRwkdbZulExNxgbOzYjOhey5qtJrqp012ZXuMXReMwX5RTlqRg+jOFJNIFRTHnwaqa3FvCBxRY0yft24QiUEoenyxHTwaMlh8KEkZ+xnrfVJsLabN0zBtbtKhFtaJ2rsyOsSzH0mNwQ2xvcbqp/90r6CBfLWPrw5BaIMDZ0VGH5djsLKp7qp/7OQNksftKR61GFn8Tk97U+cSsAVLXrdz1veDlk4536wSrAShbFsyQfe88vPLOp/AaRO/VWmohpOQMt61IQnUaUrhEkf2nxinKjAjZAUftlYxQOjpbyp2UbMxkaqCziKlReFF0jKGPN7Ee298W/5QJyBAz9/OUvi8V3muwXupNMYMPdrPO2OEQgfll+wEQTGMjSJyhUo7wVz0u3nbdf09fi14LPTRI8jTQuifwt0nW/k2tCocZju5bBVSIreS4J/Nf79VEeuwSSa9T6cl2lgrrUPXbEtO8IIwEYlPcWVGaH2ulkEnOzWrVLKGvTAlC5IaLMju42+uCHL93cvmwkXlQF+Q6WdUI7ZfiEZiP735hxGWHPDx2ym3yM2cdSoZ3BpcFl+hnGBit2tzST5RdxQ+4dhwKz2as2o2Ejsjtw1mKHTm5rm+J9wUOQsdTI3Kjnk9abMi53XBD60UPkzTe4kaP2itxCwAJib4i1iI=
 cache:
   directories:
-  - ".autoconf"
-  - "$HOME/.m2"
-  - "$HOME/google-cloud-sdk/"
+    - ".autoconf"
+    - "$HOME/.m2"
+    - "$HOME/google-cloud-sdk/"
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 before_install:
-- bash ./scripts/update_docker
-- bash ./scripts/install_gcloud
-- source $HOME/google-cloud-sdk/path.bash.inc
+  #- bash ./scripts/update_docker
+  - bash ./scripts/install_gcloud
+  - source $HOME/google-cloud-sdk/path.bash.inc
+
+
 deploy:
   skip_cleanup: true
   provider: script

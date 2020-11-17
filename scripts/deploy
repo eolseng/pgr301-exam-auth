@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+docker --version
 # Extract layers from the layered Spring Boot application
 java -Djarmode=layertools -jar ./target/$PROJECT_NAME*.jar extract
 # Sign in to Docker
