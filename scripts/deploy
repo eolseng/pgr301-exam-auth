@@ -2,7 +2,7 @@
 set -e
 
 # Full image name with registry
-export IMAGE_NAME="$GCP_REGISTRY_HOSTNAME"/"$GCP_PROJECT_NAME"/"$PROJECT_NAME"
+export IMAGE_NAME="$GCP_REGISTRY_HOSTNAME"/"$GCP_PROJECT_ID"/"$PROJECT_NAME"
 
 echo "Building and pushing the Docker Image to the repository"
 
@@ -13,7 +13,7 @@ docker build -f Dockerfile -t tmp .
 # Tag images
 echo "Tagging the image"
 docker tag tmp "$IMAGE_NAME":latest
-docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT"
+#docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT"
 
 # Push the tagged images
 echo "Pushing the image to registry"
