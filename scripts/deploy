@@ -1,22 +1,22 @@
 #!/bin/bash
 set -e
+
 # Full image name with registry
-export IMAGE_NAME="$REGISTRY_HOSTNAME"/"$PROJECT_NAME"/"$PROJECT_NAME"
+export IMAGE_NAME="$GCP_REGISTRY_HOSTNAME"/"$GCP_PROJECT_NAME"/"$PROJECT_NAME"
 
 echo "Building and pushing the Docker Image to the repository"
 
-# Build image
+# Build image - Travis-CI does not cache the Maven dependencies, so this takes a long time
 echo "Building Docker Image - this might take a while..."
-docker build -f Dockerfile -t tmp .
+docker build -f Dockerfile -t tmp . | bash &>/dev/null
 
 # Tag images
 echo "Tagging the image"
-docker tag tmp "$IMAGE_NAME":latest
-docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT"
+docker tag tmp "$IMAGE_NAME":latest | bash &>/dev/null
+docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT" | bash &>/dev/null
 
 # Push the tagged images
 echo "Pushing the image to registry"
-docker push "$IMAGE_NAME"
-#docker push "$IMAGE_NAME" | bash &>/dev/null
+docker push "$IMAGE_NAME" | bash &>/dev/null
 
 echo "Built and pushed image with tag '$TRAVIS_COMMIT' and 'latest' to the repository"

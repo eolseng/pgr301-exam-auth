@@ -6,9 +6,10 @@ services:
 
 env:
   global:
-    # GCP Setup
     - PROJECT_NAME=pgr301-exam-auth
-    - REGISTRY_HOSTNAME=eu.gcr.io
+    # GCP Setup
+    - GCP_PROJECT_NAME=pgr301-exam-10004
+    - GCP_REGISTRY_HOSTNAME=eu.gcr.io
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 cache:
@@ -26,7 +27,7 @@ before_install:
   # Authenticate gcloud with the Service Account
   - gcloud auth activate-service-account --key-file gcp_keyfile.json
   # Authenticate Docker with gcloud credentials
-  - gcloud auth configure-docker $REGISTRY_HOSTNAME
+  - gcloud auth configure-docker $GCP_REGISTRY_HOSTNAME
 
 # Disabled for faster testing of deployment to GCP registry
 install: true
