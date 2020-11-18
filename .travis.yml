@@ -29,10 +29,6 @@ before_install:
   # Authenticate Docker with gcloud credentials
   - gcloud auth configure-docker $GCP_REGISTRY_HOSTNAME
 
-# Disabled for faster testing of deployment to GCP registry
-install: true
-script: true
-
 deploy:
   skip_cleanup: true
   provider: script
