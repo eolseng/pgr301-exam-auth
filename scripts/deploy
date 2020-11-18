@@ -17,6 +17,6 @@ docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT" | bash &>/dev/null
 
 # Push the tagged images
 echo "Pushing the image to registry"
-docker push "$IMAGE_NAME" | bash &>/dev/null
+docker push "$IMAGE_NAME"
 
 echo "Built and pushed image with tag '$TRAVIS_COMMIT' and 'latest' to the repository"
