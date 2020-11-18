@@ -1,19 +1,21 @@
 #!/bin/bash
 set -e
-export IMAGE_NAME="$DOCKER_USERNAME"/"$PROJECT_NAME"
+# Full image name with registry
+export IMAGE_NAME="$REGISTRY_HOSTNAME"/"$PROJECT_NAME"/"$PROJECT_NAME"
 
-echo "Building and deploying the application"
-# Sign in to Docker
-echo "Signing in to Docker"
-echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+echo "Building and pushing the Docker Image to the repository"
+
 # Build image
 echo "Building Docker Image - this might take a while..."
 docker build -f Dockerfile -t tmp . | bash &>/dev/null
+
 # Tag images
 echo "Tagging the image"
 docker tag tmp "$IMAGE_NAME":latest | bash &>/dev/null
 docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT" | bash &>/dev/null
+
 # Push the tagged images
 echo "Pushing the image to registry"
 docker push "$IMAGE_NAME" | bash &>/dev/null
-echo "Done building and deploying application"
+
+echo "Built and pushed image with tag '$TRAVIS_COMMIT' and 'latest' to the repository"
