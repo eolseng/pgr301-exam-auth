@@ -1,17 +1,19 @@
 #!/bin/bash
 set -e
-
-# Extract layers from the layered Spring Boot application
-java -Djarmode=layertools -jar ./target/$PROJECT_NAME*.jar extract
-
-# Sign in to Docker
-echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-# Set environment variable for image name
 export IMAGE_NAME="$DOCKER_USERNAME"/"$PROJECT_NAME"
-# Build the Docker Image
-docker build -f Dockerfile -t tmp .
-# Tag images for repo with latest and commit id
-docker tag tmp "$IMAGE_NAME":latest
-docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT"
+
+echo "Building and deploying the application"
+# Sign in to Docker
+echo "Signing in to Docker"
+echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+# Build image
+echo "Building Docker Image - this might take a while..."
+docker build -f Dockerfile -t tmp . | bash &>/dev/null
+# Tag images
+echo "Tagging the image"
+docker tag tmp "$IMAGE_NAME":latest | bash &>/dev/null
+docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT" | bash &>/dev/null
 # Push the tagged images
-docker push "$IMAGE_NAME"
+echo "Pushing the image to registry"
+docker push "$IMAGE_NAME" | bash &>/dev/null
+echo "Done building and deploying application"

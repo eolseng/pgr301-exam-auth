@@ -1,3 +1,6 @@
+# Ignore keyfiles
+*keyfile.json
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
