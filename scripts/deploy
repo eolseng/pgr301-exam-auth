@@ -7,15 +7,16 @@ echo "Building and pushing the Docker Image to the repository"
 
 # Build image
 echo "Building Docker Image - this might take a while..."
-docker build -f Dockerfile -t tmp . | bash &>/dev/null
+docker build -f Dockerfile -t tmp .
 
 # Tag images
 echo "Tagging the image"
-docker tag tmp "$IMAGE_NAME":latest | bash &>/dev/null
-docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT" | bash &>/dev/null
+docker tag tmp "$IMAGE_NAME":latest
+docker tag tmp "$IMAGE_NAME":"$TRAVIS_COMMIT"
 
 # Push the tagged images
 echo "Pushing the image to registry"
-docker push "$IMAGE_NAME" | bash &>/dev/null
+docker push "$IMAGE_NAME"
+#docker push "$IMAGE_NAME" | bash &>/dev/null
 
 echo "Built and pushed image with tag '$TRAVIS_COMMIT' and 'latest' to the repository"
