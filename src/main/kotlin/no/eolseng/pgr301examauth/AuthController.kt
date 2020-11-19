@@ -21,7 +21,7 @@ import java.net.URI
 @Api(value = "/api/v1/auth", description = "Authorization API for signup, login, logout and roles")
 @RestController
 @RequestMapping("/api/v1/auth")
-class RestApi(
+class AuthController(
         private val service: UserService,
         private val authManager: AuthenticationManager,
         private val userDetailsService: UserDetailsServiceImpl

@@ -40,7 +40,7 @@ class WebSecurityConfig(
             logout {
                 logoutUrl = "/api/v1/auth/logout"
                 invalidateHttpSession = true
-                deleteCookies("JSESSIONID", "SESSION")
+                deleteCookies("JSESSIONID")
                 logoutSuccessHandler = HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)
             }
             authorizeRequests {
@@ -48,6 +48,9 @@ class WebSecurityConfig(
                 authorize("/api/v1/auth/login", permitAll)
                 authorize("/api/v1/auth/logout", permitAll)
                 authorize("/api/v1/auth/user", authenticated)
+
+                authorize("/api/v1/keg/*", authenticated)
+
                 authorize(anyRequest, denyAll)
             }
             exceptionHandling {
