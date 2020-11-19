@@ -35,7 +35,6 @@ object RestResponseFactory {
         return ResponseEntity.status(httpStatusCode).body(wrappedResponse)
     }
 
-
     fun serverFailure(message: String, httpStatusCode: Int = 500): ResponseEntity<WrappedResponse<Void>> {
         val wrappedResponse = WrappedResponse<Void>(code = httpStatusCode, message = message).validate()
         return ResponseEntity.status(httpStatusCode).body(wrappedResponse)
