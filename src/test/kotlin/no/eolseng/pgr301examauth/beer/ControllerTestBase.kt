@@ -119,4 +119,22 @@ class ControllerTestBase {
         return redirect.substringAfter(RestAssured.basePath).toInt()
     }
 
+    /**
+     * Creates a mug and returns the new mugs ID
+     */
+    fun createMug(session: String, capacity: Int): Int {
+        RestAssured.basePath = "/v1/mug/"
+        val dto = MugDto(capacity = capacity)
+        val redirect =
+                RestAssured.given().contentType(ContentType.JSON)
+                        .cookie("JSESSIONID", session)
+                        .body(dto)
+                        .post("/")
+                        .then().assertThat()
+                        .statusCode(201)
+                        .extract()
+                        .header("Location")
+        return redirect.substringAfter(RestAssured.basePath).toInt()
+    }
+
 }

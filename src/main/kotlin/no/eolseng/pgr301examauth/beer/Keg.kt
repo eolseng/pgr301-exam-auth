@@ -43,7 +43,7 @@ data class KegDto(
 
         @get:Min(0, message = "Volume cannot be negative")
         @get:Max(600, message = "Volume cannot be bigger than max keg size (600 dl)")
-        val currentVolume: Int? = null
+        val currentVolume: Int = 0
 )
 
 fun Keg.toDto(): KegDto {

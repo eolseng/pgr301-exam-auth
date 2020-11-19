@@ -50,6 +50,7 @@ class WebSecurityConfig(
                 authorize("/api/v1/auth/user", authenticated)
 
                 authorize("/api/v1/keg/*", authenticated)
+                authorize("/api/v1/mug/*", authenticated)
 
                 authorize(anyRequest, denyAll)
             }
