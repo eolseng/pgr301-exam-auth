@@ -4,18 +4,12 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TapControllerTest : ControllerTestBase() {
 
-    @BeforeEach
-    fun localSetup() {
-        RestAssured.basePath = "/v1/brew/"
-    }
-
     @Test
-    fun `fill a keg`() {
+    fun `tap a beer from a keg`() {
 
         val kegCapacity = 500
         val mugCapacity = 5

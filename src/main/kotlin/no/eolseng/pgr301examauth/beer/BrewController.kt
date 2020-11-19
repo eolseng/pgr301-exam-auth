@@ -4,18 +4,18 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
-import no.eolseng.pgr301examauth.db.UserRepository
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import kotlin.math.absoluteValue
 
 @Api(value = "/api/v1/brew", description = "Endpoints for filling kegs")
 @RestController
 @RequestMapping("/api/v1/brew")
-class BrewController (
+class BrewController(
         private val kegRepo: KegRepository
 ) {
 

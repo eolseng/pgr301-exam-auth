@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+
+  # Admin interface deprecated as of InfluxDB 1.2
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - 8086:8086
+    networks:
+      - metrics-network
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    env_file:
+      - ./influxdb/influxdb.env
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - metrics-network
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    env_file:
+      - ./grafana/grafana.env
+
+networks:
+  metrics-network:
+    driver: bridge
