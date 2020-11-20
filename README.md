@@ -16,3 +16,15 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
    `GCP Container Registry` har følgende mulige hostnavn: `gcr.io`, `us.gcr.io`, `eu.gcr.io`, eller `asia.gcr.io`
    
 4. Prosjektet er nå konfigurert slik at et push til `master` branchen vil bygge et nytt Docker Image, tagge dette som `latest` og `GIT_COMMIT_ID` og pushe dette til Google Cloud Registry. 
+
+## Metrics
+Progammet bruker `Micrometer` til å samle metrikk som lagres i `InfluxDB`.
+### Counter
+`Counter` metrikk blir brukt til å samle statistikk på antall "sipper" som er blitt forsøkt.
+Disse blir laget i tabellen `beer_sips_count` og tagges med `result` for å måle utfallet av forsøket.
+
+De forskjellige `result`ene er:
+* `NONEXSISTENT_MUG` - glasset som bruker forsøker å drikke fra eksisterer ikke
+* `NOT_OWNER` - glasset som bruker forsøker å drikke fra tilhører noen andre
+* `EMPTY_MUG` - glasset som bruker forsøker å drikke fra er tomt
+* `SUCCESS` - bruker fikk tatt seg en slurk øl

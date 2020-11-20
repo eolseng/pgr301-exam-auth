@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import kotlin.math.absoluteValue
 
 @Api(value = "/api/v1/brew", description = "Endpoints for filling kegs")
 @RestController
@@ -39,7 +38,7 @@ class BrewController(
         if (keg.owner!!.username != auth.name)
             return RestResponseFactory.userError(message = "Logged in user is not owner of keg", httpStatusCode = 401)
 
-        val amountToFill = (keg.capacity - keg.currentVolume).absoluteValue
+        val amountToFill = keg.capacity - keg.currentVolume
 
         // Sleep for the amount to fill in millis
         Thread.sleep(amountToFill.toLong())

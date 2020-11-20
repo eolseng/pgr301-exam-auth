@@ -1,9 +1,13 @@
 package no.eolseng.pgr301examauth.beer
 
+import io.micrometer.core.annotation.Timed
+import io.micrometer.core.aop.TimedAspect
+import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
+import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -23,6 +27,7 @@ class TapController(
         private val mugRepo: MugRepository
 ) {
 
+    @Timed(description = "Time of filling mugs", value = "beer.mugs.fill")
     @ApiOperation("Fills a keg with beer - uses the difference between current volume and capacity in millis to respond (one millisecond / deciliter)")
     @PostMapping(
             path = ["/"],
@@ -47,7 +52,7 @@ class TapController(
             return RestResponseFactory.userError(message = "Logged in user is not owner of mug", httpStatusCode = 401)
 
         // Get amount to fill, up to the remaining amount in the keg
-        val deficit = (mug.capacity!!.volume - mug.currentVolume).absoluteValue
+        val deficit = mug.capacity!!.volume - mug.currentVolume
         val amountToTap = min(deficit, keg.currentVolume)
 
         // Sleep for the amount to fill in millis * 10 (1 dl = 0.01 seconds)
