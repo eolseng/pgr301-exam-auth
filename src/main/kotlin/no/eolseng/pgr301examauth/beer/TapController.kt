@@ -28,7 +28,6 @@ class TapController(
         private val meterRegistry: MeterRegistry
 ) {
 
-    @Timed(description = "Time of filling mugs", value = "beer.mugs.fill")
     @ApiOperation("Fills a keg with beer - uses the difference between current volume and capacity in millis to respond (one millisecond / deciliter)")
     @PostMapping(
             path = ["/"],
@@ -69,7 +68,7 @@ class TapController(
 
         // Record the volume filled
         DistributionSummary
-                .builder("beer.tap.volume")
+                .builder("beer.taps.volume")
                 .baseUnit("dl")
                 .register(meterRegistry)
                 .record(amountToTap.toDouble())

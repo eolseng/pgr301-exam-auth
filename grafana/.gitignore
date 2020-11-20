@@ -1,3 +1,4 @@
 # Only commit the env. file
 *
 !grafana.env
+!dashboard.json

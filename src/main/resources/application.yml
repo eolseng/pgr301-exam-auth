@@ -23,7 +23,7 @@ management:
         db: metrics
         user-name: user
         password: user
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

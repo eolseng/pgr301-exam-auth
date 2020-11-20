@@ -1,5 +1,6 @@
 package no.eolseng.pgr301examauth.beer
 
+import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
@@ -18,6 +19,7 @@ class BrewController(
         private val kegRepo: KegRepository
 ) {
 
+    @Timed(description = "Time of filling kegs", value = "beer.kegs.fill")
     @ApiOperation("Fills a keg with beer - uses the difference between current volume and capacity in millis to respond (one millisecond / deciliter)")
     @PostMapping(path = ["/{id}"])
     fun fillKeg(
