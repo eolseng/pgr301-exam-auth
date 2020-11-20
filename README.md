@@ -28,3 +28,15 @@ De forskjellige `result`ene er:
 * `NOT_OWNER` - glasset som bruker forsøker å drikke fra tilhører noen andre
 * `EMPTY_MUG` - glasset som bruker forsøker å drikke fra er tomt
 * `SUCCESS` - bruker fikk tatt seg en slurk øl
+
+### Distribution Summary
+`DistributionSummary` brukes til å måle størrelsen av påfyllinger i glass, via `/sip` endepunktet.
+
+Dette tillater målinger som:
+* Gjennomsnittlig størrelse av påfyll
+* Total mengde påfyll over en gitt periode
+* Antall påfyllninger i en gitt periode
+
+### Gauge
+`Gauge` brukes til å regne ut _**Beercentage**_ - prosentandelen av keg-kapasiteten som er fylt.
+Dersom denne blir for lav er det på tide å selge øl til kundene.

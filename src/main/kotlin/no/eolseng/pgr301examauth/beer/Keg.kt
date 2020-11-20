@@ -2,13 +2,37 @@ package no.eolseng.pgr301examauth.beer
 
 import no.eolseng.pgr301examauth.db.User
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Service
 import javax.persistence.*
+import javax.transaction.Transactional
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 interface KegRepository : JpaRepository<Keg, Int> {
+
     fun findAllByOwner(owner: User): Set<Keg>
+
+    @Query("SELECT SUM(k.capacity) FROM Keg k")
+    fun getTotalCapacity(): Int
+
+    @Query("SELECT SUM(k.currentVolume) FROM Keg k")
+    fun getTotalVolume(): Int
+
+
+}
+
+@Service
+class KegService(
+        private val kegRepo: KegRepository
+) {
+
+    @Transactional
+    fun getAvgKeg(): Double {
+        return kegRepo.getTotalVolume().toDouble() / kegRepo.getTotalCapacity()
+    }
+
 }
 
 @Entity
@@ -32,7 +56,7 @@ class Keg(
         var currentVolume: Int = 0
 
 ) {
-    companion object{
+    companion object {
         const val MIN_CAPACITY: Int = 0
         const val MAX_CAPACITY: Int = 600
     }

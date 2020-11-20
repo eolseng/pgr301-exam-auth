@@ -1,5 +1,7 @@
 package no.eolseng.pgr301examauth.beer
 
+import io.micrometer.core.instrument.Gauge
+import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
@@ -17,8 +19,18 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/keg")
 class KegController(
         private val userRepo: UserRepository,
-        private val kegRepo: KegRepository
+        private val kegRepo: KegRepository,
+        private val kegService: KegService,
+        private val meterRegistry: MeterRegistry
 ) {
+
+    init {
+        // Setup the Beercentage Gauge - this causes error on appliation shutdown
+        Gauge
+                .builder("beer.keg.avg", kegService, KegService::getAvgKeg)
+                .register(meterRegistry)
+
+    }
 
     @ApiOperation("Register a new keg to the authorized user")
     @PostMapping(
@@ -26,10 +38,9 @@ class KegController(
             consumes = [(MediaType.APPLICATION_JSON_VALUE)])
     fun registerKeg(
             @RequestBody(required = true) @Valid dto: KegDto,
-            auth: Authentication?
+            auth: Authentication
     ): ResponseEntity<WrappedResponse<Void>> {
         // Authenticate user and DTO
-        auth ?: return RestResponseFactory.userError(message = "User not logged in", httpStatusCode = 401)
         if (!auth.isAuthenticated) return RestResponseFactory.userError(message = "User not authenticated", httpStatusCode = 401)
         if (dto.capacity == null || dto.capacity < 10L || dto.capacity > 600L) return RestResponseFactory.userError(message = "Must supply 'capacity' between 10 and 600", httpStatusCode = 400)
         // Retrieve user
