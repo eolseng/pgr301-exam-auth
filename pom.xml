@@ -78,6 +78,12 @@
             <artifactId>h2</artifactId>
         </dependency>
 
+        <!-- METRICS AND LOG DEPENDENCIES -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-influx</artifactId>
+        </dependency>
+
         <!-- MISC DEPENDENCIES -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>

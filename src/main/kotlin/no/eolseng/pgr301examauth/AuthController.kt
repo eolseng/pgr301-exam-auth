@@ -1,5 +1,7 @@
 package no.eolseng.pgr301examauth
 
+import io.micrometer.core.annotation.Timed
+import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
@@ -7,6 +9,7 @@ import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
 import no.eolseng.pgr301examauth.db.UserDetailsServiceImpl
 import no.eolseng.pgr301examauth.db.UserService
 import no.eolseng.pgr301examauth.dto.AuthDto
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
@@ -24,7 +27,8 @@ import java.net.URI
 class AuthController(
         private val service: UserService,
         private val authManager: AuthenticationManager,
-        private val userDetailsService: UserDetailsServiceImpl
+        private val userDetailsService: UserDetailsServiceImpl,
+        private val meterRegistry: MeterRegistry
 ) {
 
     @ApiOperation("Retrieve name and roles of signed in user")
@@ -41,6 +45,8 @@ class AuthController(
             path = ["/signup"],
             consumes = [(MediaType.APPLICATION_JSON_VALUE)])
     fun signup(@RequestBody dto: AuthDto): ResponseEntity<WrappedResponse<Void>> {
+
+        meterRegistry.counter("http.requests", "uri", "/api/v1/auth/signup", "method", HttpMethod.POST.toString()).increment()
 
         // Extract data from the DTO - lower casing for easier logons
         val username = dto.username.toLowerCase()

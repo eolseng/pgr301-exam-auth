@@ -13,3 +13,17 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: create-drop
+
+management:
+  metrics:
+    export:
+      influx:
+        step: 5s
+        uri: http://localhost:8086
+        db: metrics
+        user-name: user
+        password: user
+  endpoints:
+    web:
+      exposure:
+        include: "*"

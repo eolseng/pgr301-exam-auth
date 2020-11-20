@@ -49,10 +49,13 @@ class WebSecurityConfig(
                 authorize("/api/v1/auth/logout", permitAll)
                 authorize("/api/v1/auth/user", authenticated)
 
-                authorize("/api/v1/keg/*", authenticated)
-                authorize("/api/v1/mug/*", authenticated)
-                authorize("/api/v1/brew/*", authenticated)
-                authorize("/api/v1/tap/*", authenticated)
+                authorize("/api/v1/keg/**", authenticated)
+                authorize("/api/v1/mug/**", authenticated)
+                authorize("/api/v1/brew/**", authenticated)
+                authorize("/api/v1/tap/**", authenticated)
+
+                // TODO: Should all actuator endpoints be exposed?
+                authorize("/actuator/**", permitAll)
 
                 authorize(anyRequest, denyAll)
             }

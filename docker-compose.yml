@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
 
-  # Admin interface deprecated as of InfluxDB 1.2
   influxdb:
     image: influxdb:1.8
     ports:
