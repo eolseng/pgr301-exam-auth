@@ -1,5 +1,6 @@
 package no.eolseng.pgr301examauth.beer
 
+import io.micrometer.core.annotation.Timed
 import no.eolseng.pgr301examauth.db.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -20,6 +21,8 @@ interface KegRepository : JpaRepository<Keg, Int> {
     @Query("SELECT SUM(k.currentVolume) FROM Keg k")
     fun getTotalVolume(): Int
 
+    @Query("SELECT k.id FROM Keg k")
+    fun getAllIds(): List<Int>
 
 }
 
@@ -27,6 +30,18 @@ interface KegRepository : JpaRepository<Keg, Int> {
 class KegService(
         private val kegRepo: KegRepository
 ) {
+
+    @Timed(description = "Time of filling a single keg", value = "beer.kegs.fill.single")
+    fun fillKeg(keg: Keg) {
+        // Calculate amount to fill
+        val amountToFill = keg.capacity - keg.currentVolume
+        // Sleep for the amount to fill in millis
+        Thread.sleep(amountToFill.toLong() * 10)
+        // Fill
+        keg.currentVolume += amountToFill
+        // Persist
+        kegRepo.save(keg)
+    }
 
     @Transactional
     fun getAvgKeg(): Double {

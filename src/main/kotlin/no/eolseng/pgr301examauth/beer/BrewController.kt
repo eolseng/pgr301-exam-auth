@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/brew")
 class BrewController(
-        private val kegRepo: KegRepository
+        private val kegRepo: KegRepository,
+        private val kegService: KegService
 ) {
 
-    @Timed(description = "Time of filling kegs", value = "beer.kegs.fill")
+
     @ApiOperation("Fills a keg with beer - uses the difference between current volume and capacity in millis to respond (one millisecond / deciliter)")
     @PostMapping(path = ["/{id}"])
     fun fillKeg(
@@ -34,19 +35,14 @@ class BrewController(
             return RestResponseFactory.userError(message = "Id must be convertible to type Int", httpStatusCode = 400)
         }
         // Check if keg exists
-        var keg = kegRepo.findById(id).orElse(null)
+        val keg = kegRepo.findById(id).orElse(null)
                 ?: return RestResponseFactory.notFound("Cannot find keg with ID $id")
         // User must be owner of keg
         if (keg.owner!!.username != auth.name)
             return RestResponseFactory.userError(message = "Logged in user is not owner of keg", httpStatusCode = 401)
 
-        val amountToFill = keg.capacity - keg.currentVolume
-
-        // Sleep for the amount to fill in millis
-        Thread.sleep(amountToFill.toLong())
-
-        keg.currentVolume += amountToFill
-        keg = kegRepo.save(keg)
+        // Fill the keg
+        kegService.fillKeg(keg)
 
         return RestResponseFactory.payload(200, keg.toDto())
 

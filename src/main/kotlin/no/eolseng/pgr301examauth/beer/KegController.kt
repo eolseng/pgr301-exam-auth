@@ -27,6 +27,7 @@ class KegController(
     init {
         // Setup the Beercentage Gauge
         // NB: this causes error on application shutdown - JPA has closed the Entity Manager but the Gauge tries to send a final gauge
+        // The data is cool, but the implementation could probably be better. Should also not be placed here...
         Gauge
                 .builder("beer.kegs.avg", kegService, KegService::getAvgKeg)
                 .register(meterRegistry)
