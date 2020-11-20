@@ -21,7 +21,7 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
 Progammet bruker `Micrometer` til å samle metrikk som lagres i `InfluxDB`.
 ### Counter
 `Counter` metrikk blir brukt til å samle statistikk på antall "sipper" som er blitt forsøkt.
-Disse blir laget i tabellen `beer_sips_count` og tagges med `result` for å måle utfallet av forsøket.
+Disse blir laget i tabellen `beer_sips_count` og tagges med `result` for å måle utfallet av forsøket. Denne dataen kan man bruke til å se om man har overstadig berusede brukere.
 
 De forskjellige `result`ene er:
 * `NONEXSISTENT_MUG` - glasset som bruker forsøker å drikke fra eksisterer ikke

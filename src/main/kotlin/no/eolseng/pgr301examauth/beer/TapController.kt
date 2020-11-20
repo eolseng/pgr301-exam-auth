@@ -1,19 +1,19 @@
 package no.eolseng.pgr301examauth.beer
 
 import io.micrometer.core.annotation.Timed
-import io.micrometer.core.aop.TimedAspect
+import io.micrometer.core.instrument.DistributionSummary
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.*
-import kotlin.math.absoluteValue
-import kotlin.math.max
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import kotlin.math.min
 
 // DTO for filling a mug from a keg
@@ -24,7 +24,8 @@ data class TapDto(val kegId: Int, val mugId: Int)
 @RequestMapping("/api/v1/tap")
 class TapController(
         private val kegRepo: KegRepository,
-        private val mugRepo: MugRepository
+        private val mugRepo: MugRepository,
+        private val meterRegistry: MeterRegistry
 ) {
 
     @Timed(description = "Time of filling mugs", value = "beer.mugs.fill")
@@ -65,6 +66,13 @@ class TapController(
         // Add amount tapped to mug
         mug.currentVolume += amountToTap
         mugRepo.save(mug)
+
+        // Record the volume filled
+        DistributionSummary
+                .builder("beer.tap.volume")
+                .baseUnit("dl")
+                .register(meterRegistry)
+                .record(amountToTap.toDouble())
 
         return RestResponseFactory.noPayload(200)
 

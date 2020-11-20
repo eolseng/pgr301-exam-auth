@@ -18,7 +18,7 @@ management:
   metrics:
     export:
       influx:
-        step: 5s
+        step: 60s
         uri: http://localhost:8086
         db: metrics
         user-name: user
