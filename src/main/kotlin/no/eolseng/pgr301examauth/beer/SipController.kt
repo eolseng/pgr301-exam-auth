@@ -7,6 +7,7 @@ import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
+import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -16,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/sip")
 class SipController(
-        private val mugRepo: MugRepository,
-        private val meterRegistry: MeterRegistry
+        private val sipService: SipService
 ) {
 
     @ApiOperation("Takes a sip of beer from a mug")
     @PostMapping(path = [""])
-    fun fillKeg(
+    fun takeSip(
             @RequestParam id: String,
             auth: Authentication
     ): ResponseEntity<WrappedResponse<Void>> {
@@ -34,34 +34,55 @@ class SipController(
             return RestResponseFactory.userError(message = "Id must be convertible to type Int", httpStatusCode = 400)
         }
 
-        // Check if mug exists
+         return when (sipService.takeSip(mugId, auth.name)) {
+             SipService.SipResult.NONEXISTENT_MUG ->
+                 RestResponseFactory.notFound("Cannot find mug with ID $mugId")
+             SipService.SipResult.NOT_OWNER ->
+                 RestResponseFactory.userError(message = "Logged in user is not owner of mug with id $mugId", httpStatusCode = 401)
+             SipService.SipResult.EMPTY_MUG ->
+                 RestResponseFactory.userError(message = "Mug with id $mugId is empty")
+             SipService.SipResult.SUCCESS ->
+                 RestResponseFactory.noPayload(200)
+         }
+    }
+
+
+}
+
+@Service
+class SipService(
+        private val mugRepo: MugRepository,
+        private val meterRegistry: MeterRegistry
+) {
+
+    fun takeSip(mugId: Int, username: String): SipResult {
+
         val mug = mugRepo.findById(mugId).orElse(null)
-        if (mug == null) {
-            meterRegistry.counter("beer.sips.count", "result", SipResult.NONEXISTENT_MUG.toString()).increment()
-            return RestResponseFactory.notFound("Cannot find mug with ID $mugId")
+
+        return when {
+            // Mug does not exist
+            mug == null -> {
+                meterRegistry.counter("beer.sips.count", "result", SipResult.NONEXISTENT_MUG.toString()).increment()
+                SipResult.NONEXISTENT_MUG
+            }
+            // Not owner of mug
+            mug.owner!!.username != username -> {
+                meterRegistry.counter("beer.sips.count", "result", SipResult.NOT_OWNER.toString()).increment()
+                SipResult.NOT_OWNER
+            }
+            // Mug is empty
+            mug.currentVolume == 0 -> {
+                meterRegistry.counter("beer.sips.count", "result", SipResult.EMPTY_MUG.toString()).increment()
+                SipResult.EMPTY_MUG
+            }
+            // Take a sip
+            else -> {
+                mug.currentVolume -= 1
+                mugRepo.save(mug)
+                meterRegistry.counter("beer.sips.count", "result", SipResult.SUCCESS.toString()).increment()
+                SipResult.SUCCESS
+            }
         }
-        // User must be owner of keg
-        if (mug.owner!!.username != auth.name) {
-            meterRegistry.counter("beer.sips.count", "result", SipResult.NOT_OWNER.toString()).increment()
-            return RestResponseFactory.userError(message = "Logged in user is not owner of mug with id $mugId", httpStatusCode = 401)
-        }
-        // Check that the mug is not empty
-        if (mug.currentVolume == 0) {
-            meterRegistry.counter("beer.sips.count", "result", SipResult.EMPTY_MUG.toString()).increment()
-            return RestResponseFactory.userError(message = "Mug with id $mugId is empty")
-        }
-
-        // Take a sip
-        mug.currentVolume -= 1
-
-        // Persist new volume
-        mugRepo.save(mug)
-
-        // Increase the metric counter for sips
-        meterRegistry.counter("beer.sips.count", "result", SipResult.SUCCESS.toString()).increment()
-
-        // Return success
-        return RestResponseFactory.noPayload(200)
     }
 
     enum class SipResult {

@@ -1,5 +1,6 @@
 package no.eolseng.pgr301examauth.beer
 
+import io.micrometer.core.annotation.Timed
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
 import io.swagger.annotations.Api
@@ -10,8 +11,10 @@ import no.eolseng.pgr301examauth.db.UserRepository
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
+import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import javax.transaction.Transactional
 import javax.validation.Valid
 
 @Api(value = "/api/v1/keg", description = "Endpoints for managing beer kegs")
@@ -43,8 +46,10 @@ class KegController(
             auth: Authentication
     ): ResponseEntity<WrappedResponse<Void>> {
         // Authenticate user and DTO
-        if (!auth.isAuthenticated) return RestResponseFactory.userError(message = "User not authenticated", httpStatusCode = 401)
-        if (dto.capacity == null || dto.capacity < 10L || dto.capacity > 600L) return RestResponseFactory.userError(message = "Must supply 'capacity' between 10 and 600", httpStatusCode = 400)
+        if (!auth.isAuthenticated)
+            return RestResponseFactory.userError(message = "User not authenticated", httpStatusCode = 401)
+        if (dto.capacity == null || dto.capacity < 10L || dto.capacity > 600L)
+            return RestResponseFactory.userError(message = "Must supply 'capacity' between 10 and 600", httpStatusCode = 400)
         // Retrieve user
         val user = userRepo.findById(auth.name).get()
         // Create a new keg and register
@@ -88,6 +93,35 @@ class KegController(
         val kegs = kegRepo.findAllByOwner(user)
         val kegsDto = kegs.map { it.toDto() }
         return RestResponseFactory.payload(httpStatusCode = 200, data = kegsDto)
+    }
+
+}
+
+@Service
+class KegService(
+        private val kegRepo: KegRepository
+) {
+
+    /**
+     * Fills the supplied keg
+     * Simulates time spent with "Thread.sleep()" to get metric data
+     */
+    @Timed(description = "Time of filling a single keg", value = "beer.kegs.fill.single")
+    fun fillKeg(keg: Keg) {
+        // Calculate amount to fill
+        val amountToFill = keg.capacity - keg.currentVolume
+        // Sleep for the amount to fill. Fills 20 liters / second (100 dl = 500 ms, 500 dl = 2500 ms)
+        // This is faked to make the task and LongTaskTimer take more time
+        Thread.sleep(amountToFill.toLong() * 5)
+        // Fill to capacity - not using 'amountToFill' in case of manual filling causing keg overflow
+        keg.currentVolume = keg.capacity
+        // Persist the filled keg
+        kegRepo.save(keg)
+    }
+
+    @Transactional
+    fun getAvgKeg(): Double {
+        return kegRepo.getTotalVolume().toDouble() / kegRepo.getTotalCapacity()
     }
 
 }

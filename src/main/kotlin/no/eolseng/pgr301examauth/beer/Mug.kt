@@ -16,7 +16,7 @@ class Mug(
 
         @get:Id
         @get:GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+        var id: Int = 0,
 
         @get:NotNull
         @get:ManyToOne

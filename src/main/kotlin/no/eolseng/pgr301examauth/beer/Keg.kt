@@ -26,31 +26,6 @@ interface KegRepository : JpaRepository<Keg, Int> {
 
 }
 
-@Service
-class KegService(
-        private val kegRepo: KegRepository
-) {
-
-    @Timed(description = "Time of filling a single keg", value = "beer.kegs.fill.single")
-    fun fillKeg(keg: Keg) {
-        // Calculate amount to fill
-        val amountToFill = keg.capacity - keg.currentVolume
-        // Sleep for the amount to fill. Fills 20 liters / second (100 dl = 500 ms, 500 dl = 2500 ms)
-        // This is faked to make the task and LongTaskTimer take more time
-        Thread.sleep(amountToFill.toLong() * 5)
-        // Fill
-        keg.currentVolume += amountToFill
-        // Persist
-        kegRepo.save(keg)
-    }
-
-    @Transactional
-    fun getAvgKeg(): Double {
-        return kegRepo.getTotalVolume().toDouble() / kegRepo.getTotalCapacity()
-    }
-
-}
-
 @Entity
 @Table(name = "KEGS")
 class Keg(
@@ -73,7 +48,7 @@ class Keg(
 
 ) {
     companion object {
-        const val MIN_CAPACITY: Int = 0
+        const val MIN_CAPACITY: Int = 100
         const val MAX_CAPACITY: Int = 600
     }
 }
