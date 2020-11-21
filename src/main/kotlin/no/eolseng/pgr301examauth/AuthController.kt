@@ -9,6 +9,8 @@ import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
 import no.eolseng.pgr301examauth.db.UserDetailsServiceImpl
 import no.eolseng.pgr301examauth.db.UserService
 import no.eolseng.pgr301examauth.dto.AuthDto
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -27,9 +29,10 @@ import java.net.URI
 class AuthController(
         private val service: UserService,
         private val authManager: AuthenticationManager,
-        private val userDetailsService: UserDetailsServiceImpl,
-        private val meterRegistry: MeterRegistry
+        private val userDetailsService: UserDetailsServiceImpl
 ) {
+
+    val logger: Logger = LoggerFactory.getLogger(AuthController::class.java)
 
     @ApiOperation("Retrieve name and roles of signed in user")
     @GetMapping("/user")
@@ -52,12 +55,15 @@ class AuthController(
 
         // Attempt to register user
         val registered = service.createUser(username, password, setOf("USER"))
-        if (!registered) return RestResponseFactory.userError(message = "Username already exists")
+        if (!registered) {
+            return RestResponseFactory.userError(message = "Username already exists")
+        }
 
         // Attempt to retrieve the user from database
         val userDetails = try {
             userDetailsService.loadUserByUsername(username)
         } catch (e: UsernameNotFoundException) {
+            logger.warn("Newly created user with name '$username' could not be retrieved from database")
             return RestResponseFactory.serverFailure("Could not retrieve user from database")
         }
 
@@ -93,10 +99,12 @@ class AuthController(
         authManager.authenticate(token)
         if (token.isAuthenticated) {
             SecurityContextHolder.getContext().authentication = token
+            logger.info("User logged in: $username")
             return RestResponseFactory.noPayload(204)
         }
 
         // Fallback in case authentication fails - Wrong password gets handled by 'authManager.authenticate(token)'
+        logger.info("Wrong password: $username")
         return RestResponseFactory.userError("Authentication failed")
     }
 

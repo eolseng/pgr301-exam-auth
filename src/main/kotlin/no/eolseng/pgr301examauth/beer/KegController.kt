@@ -7,7 +7,10 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse
+import no.eolseng.pgr301examauth.db.User
 import no.eolseng.pgr301examauth.db.UserRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -26,6 +29,8 @@ class KegController(
         private val kegService: KegService,
         private val meterRegistry: MeterRegistry
 ) {
+
+    val logger: Logger = LoggerFactory.getLogger(KegController::class.java)
 
     init {
         // Setup the Beercentage Gauge
@@ -53,9 +58,7 @@ class KegController(
         // Retrieve user
         val user = userRepo.findById(auth.name).get()
         // Create a new keg and register
-        var keg = Keg(owner = user, capacity = dto.capacity)
-        keg = kegRepo.save(keg)
-        // Return redirect to new saved keg to user
+        val keg = kegService.createKeg(user, dto.capacity)
         return RestResponseFactory.created(URI.create("/api/v1/keg/${keg.id}"))
     }
 
@@ -101,6 +104,15 @@ class KegController(
 class KegService(
         private val kegRepo: KegRepository
 ) {
+    val logger: Logger = LoggerFactory.getLogger(KegService::class.java)
+
+    fun createKeg(owner: User, capacity: Int): Keg {
+        // Create a new keg and register
+        val keg = kegRepo.save(Keg(owner = owner, capacity = capacity))
+        // Return redirect to new saved keg to user
+        logger.info("New Keg[Id: ${keg.id}, Owner: ${keg.owner!!.username}, Capacity: ${keg.capacity}]")
+        return keg
+    }
 
     /**
      * Fills the supplied keg
@@ -116,6 +128,7 @@ class KegService(
         // Fill to capacity - not using 'amountToFill' in case of manual filling causing keg overflow
         keg.currentVolume = keg.capacity
         // Persist the filled keg
+        logger.info("Refilled Keg[Id: ${keg.id}, Capacity: ${keg.capacity}] with $amountToFill dl")
         kegRepo.save(keg)
     }
 

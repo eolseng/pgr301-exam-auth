@@ -1,5 +1,8 @@
 package no.eolseng.pgr301examauth.db
 
+import no.eolseng.pgr301examauth.beer.KegService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -15,6 +18,8 @@ class UserService(
         private val authManager: AuthenticationManager,
         private val passwordEncoder: PasswordEncoder
 ) {
+
+    val logger: Logger = LoggerFactory.getLogger(UserService::class.java)
 
     fun createUser(
             username: String,
@@ -33,6 +38,7 @@ class UserService(
                     roles = roles.map { "ROLE_$it" }.toSet()
             )
             repository.save(user)
+            logger.info("New user created: $username")
             return true
         } catch (e: Exception) {
             return false

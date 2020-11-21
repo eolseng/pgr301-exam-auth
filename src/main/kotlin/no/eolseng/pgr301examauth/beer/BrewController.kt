@@ -1,6 +1,5 @@
 package no.eolseng.pgr301examauth.beer
 
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
@@ -40,10 +39,8 @@ class BrewController(
         // User must be owner of keg
         if (keg.owner!!.username != auth.name)
             return RestResponseFactory.userError(message = "Logged in user is not owner of keg", httpStatusCode = 401)
-
         // Fill the keg
         kegService.fillKeg(keg)
-
         return RestResponseFactory.payload(200, keg.toDto())
 
     }

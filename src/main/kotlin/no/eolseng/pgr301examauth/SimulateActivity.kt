@@ -3,6 +3,8 @@ package no.eolseng.pgr301examauth
 import no.eolseng.pgr301examauth.beer.*
 import no.eolseng.pgr301examauth.db.UserRepository
 import no.eolseng.pgr301examauth.db.UserService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -16,8 +18,8 @@ private const val KEG_AMOUNT = 30
 @Component
 class TestDataInsertion(
         private val userService: UserService,
+        private val kegService: KegService,
         private val userRepo: UserRepository,
-        private val kegRepo: KegRepository,
         private val mugRepo: MugRepository
 ) : CommandLineRunner {
     override fun run(vararg args: String) {
@@ -29,7 +31,7 @@ class TestDataInsertion(
             // Get random keg capacity
             val capacity = (Keg.MIN_CAPACITY..Keg.MAX_CAPACITY).random()
             // Persist the keg
-            kegRepo.save(Keg(owner = user, capacity = capacity))
+            kegService.createKeg(user, capacity)
         }
         // Create a mug
         val mug = Mug(owner = user, capacity = Mug.Capacity.HUGE)
@@ -52,7 +54,6 @@ class TestDataActivity(
     @Scheduled(fixedDelay = 3 * 1000)
     fun randomTapAndSip() {
         if (userRepo.existsById(TEST_USERNAME)){
-
             val user = userRepo.findById(TEST_USERNAME).get()
             val kegs = kegRepo.findAllByOwner(user)
             val mug = mugRepo.findAllByOwner(user).first()

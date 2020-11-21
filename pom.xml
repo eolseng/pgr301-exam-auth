@@ -21,6 +21,7 @@
         <java.version>11</java.version>
         <kotlin.version>1.4.10</kotlin.version>
         <springfox.version>3.0.0</springfox.version>
+        <logzio-appender.version>1.0.24</logzio-appender.version>
         <restassured.version>4.2.0</restassured.version>
     </properties>
 
@@ -43,12 +44,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -82,6 +77,11 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-influx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.logz.logback</groupId>
+            <artifactId>logzio-logback-appender</artifactId>
+            <version>${logzio-appender.version}</version>
         </dependency>
 
         <!-- MISC DEPENDENCIES -->

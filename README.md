@@ -7,9 +7,10 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
 2. Påse at prosjektet har `Container Registry` aktivert
 3. Krypter `gcp_keyfile.json` og variabler for GCP Prosjekt ID og Container Registry sitt hostname med følgende kommandoer:
     ```
-    travis encypt-file --pro gcp_keyfile.json --add
-    travis encrypt --pro GCP_PROJECT_ID="[GCP Prosjektets ID]" --add
-    travis encrypt --pro GCP_REGISTRY_HOSTNAME="[GCP Container Registry sitt hostnavn]" --add
+   travis encypt-file --pro gcp_keyfile.json --add
+   travis encrypt --pro GCP_PROJECT_ID="[GCP Prosjektets ID]" --add
+   travis encrypt --pro GCP_REGISTRY_HOSTNAME="[GCP Container Registry sitt hostnavn]" --add
+   
     ```
    NB.: Krever pålogget bruker på Travis-CI sin CLI
    
