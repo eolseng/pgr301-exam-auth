@@ -46,8 +46,6 @@ class AuthController(
             consumes = [(MediaType.APPLICATION_JSON_VALUE)])
     fun signup(@RequestBody dto: AuthDto): ResponseEntity<WrappedResponse<Void>> {
 
-        meterRegistry.counter("http.requests", "uri", "/api/v1/auth/signup", "method", HttpMethod.POST.toString()).increment()
-
         // Extract data from the DTO - lower casing for easier logons
         val username = dto.username.toLowerCase()
         val password = dto.password
