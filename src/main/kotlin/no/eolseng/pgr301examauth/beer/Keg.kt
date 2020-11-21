@@ -35,8 +35,9 @@ class KegService(
     fun fillKeg(keg: Keg) {
         // Calculate amount to fill
         val amountToFill = keg.capacity - keg.currentVolume
-        // Sleep for the amount to fill in millis
-        Thread.sleep(amountToFill.toLong() * 10)
+        // Sleep for the amount to fill. Fills 20 liters / second (100 dl = 500 ms, 500 dl = 2500 ms)
+        // This is faked to make the task and LongTaskTimer take more time
+        Thread.sleep(amountToFill.toLong() * 5)
         // Fill
         keg.currentVolume += amountToFill
         // Persist

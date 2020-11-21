@@ -13,7 +13,8 @@ class BreweryScheduling(
     @Scheduled(fixedDelay = 60 * 1000)
     @Timed(description = "Time of filling all kegs", value = "beer.kegs.fill.all", longTask = true)
     fun refillAllKegs() {
-        Thread.sleep(30000)
+        // Add 15 second load up time
+        Thread.sleep(15 * 1000)
         kegRepo.getAllIds()
                 .forEach {
                     val keg = kegRepo.findById(it).get()
