@@ -10,7 +10,8 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
    travis encypt-file --pro gcp_keyfile.json --add
    travis encrypt --pro GCP_PROJECT_ID="[GCP Prosjektets ID]" --add
    travis encrypt --pro GCP_REGISTRY_HOSTNAME="[GCP Container Registry sitt hostnavn]" --add
-   
+   travis encrypt --pro logzio_token=[Token for Logz.io-bruker] --add
+   travis encrypt --pro logzio_url=[Listener URL for Logz.io] --add
     ```
    NB.: Krever pålogget bruker på Travis-CI sin CLI
    
