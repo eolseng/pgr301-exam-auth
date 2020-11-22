@@ -1,6 +1,5 @@
 package no.eolseng.pgr301examauth
 
-
 import io.swagger.annotations.Api
 import no.eolseng.pg6102.utils.wrappedresponse.RestResponseFactory
 import no.eolseng.pg6102.utils.wrappedresponse.WrappedResponse

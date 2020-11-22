@@ -19,7 +19,6 @@ class BrewController(
         private val kegService: KegService
 ) {
 
-
     @ApiOperation("Fills a keg with beer - uses the difference between current volume and capacity in millis to respond (one millisecond / deciliter)")
     @PostMapping(path = ["/{id}"])
     fun fillKeg(
