@@ -6,8 +6,6 @@ spring:
     gcp:
       sql:
         enabled: true
-        database-name: ${AUTH_DB_NAME}
-        instance-connection-name: ${AUTH_DB_INSTANCE_NAME}
 
 # Disable InfluxDB metric export in 'prod' environment
 management:
