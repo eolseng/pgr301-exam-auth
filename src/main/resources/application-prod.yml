@@ -1,5 +1,7 @@
 # Connect to GCP Cloud SQL Instance in prod environment
 spring:
+  datasource:
+    initialization-mode: always
   cloud:
     gcp:
       sql:
