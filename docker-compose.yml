@@ -16,7 +16,8 @@ services:
       - postgres-network
       - metrics-network
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      # Activates simulation in the application to produce metrics
+      SPRING_PROFILES_ACTIVE: "dev, simulation"
     env_file:
       - ./dev.env
     depends_on:

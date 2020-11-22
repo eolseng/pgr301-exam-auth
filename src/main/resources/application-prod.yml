@@ -1,4 +1,4 @@
-# Connect to GCP Cloud SQL Instance in prod environment
+# Connect to GCP Cloud SQL Instance in 'prod' environment
 spring:
   datasource:
     initialization-mode: always
@@ -7,13 +7,7 @@ spring:
   cloud:
     gcp:
       sql:
+        # Use Cloud GCP SQL to connect to a Google Cloud SQL Instance
         enabled: true
         instance-connection-name: ${AUTH_DB_URL}
         database-name: ${AUTH_DB_NAME}
-
-# Disable InfluxDB metric export in 'prod' environment
-management:
-  metrics:
-    export:
-      influx:
-        enabled: false

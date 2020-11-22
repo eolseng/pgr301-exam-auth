@@ -6,6 +6,7 @@ import no.eolseng.pgr301examauth.db.UserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
+import org.springframework.context.annotation.Profile
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
@@ -14,8 +15,10 @@ private const val KEG_AMOUNT = 30
 
 /**
  * Used to insert test data to help showcase the application metrics
+ * Is only used when running application with 'simulation' profile active
  */
 @Component
+@Profile("simulation")
 class TestDataInsertion(
         private val userService: UserService,
         private val kegService: KegService,

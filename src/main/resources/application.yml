@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: auth
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: validate
-  # Only use Cloud SQL in Prod.
   cloud:
     gcp:
       sql:
+        # Disable by default. Enabled in 'prod'.
+        enabled: false
+management:
+  metrics:
+    export:
+      influx:
+        # Disable by default. Enabled in 'dev'.
         enabled: false
