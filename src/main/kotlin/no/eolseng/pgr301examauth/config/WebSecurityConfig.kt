@@ -49,6 +49,8 @@ class WebSecurityConfig(
                 logoutSuccessHandler = HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)
             }
             authorizeRequests {
+                authorize("/", permitAll)
+
                 authorize("/api/v1/auth/signup", permitAll)
                 authorize("/api/v1/auth/login", permitAll)
                 authorize("/api/v1/auth/logout", permitAll)

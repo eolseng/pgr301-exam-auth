@@ -18,7 +18,7 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
     * Gi kontoen rollen `Storage Admin` - dette lar Travis pushe images til Container Registry
     * Eksporter en .json-nøkkel for kontoen
     * Navngi nøkkelen `gcp_keyfile.json` og plasser den i prosjektet rot-mappe
-2. Påse at prosjektet har `Container Registry` aktivert
+2. Påse at GCP prosjektet har `Container Registry` aktivert
 3. Krypter `gcp_keyfile.json` og variabler for GCP Prosjekt ID og Container Registry sitt hostname med følgende kommandoer:
     ```
    travis encypt-file --pro gcp_keyfile.json --add
