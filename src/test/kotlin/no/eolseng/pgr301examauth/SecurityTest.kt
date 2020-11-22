@@ -19,7 +19,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = [(AuthApplication::class)],
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 class SecurityTest {
 
     @LocalServerPort
