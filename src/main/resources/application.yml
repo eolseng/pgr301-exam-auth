@@ -6,20 +6,22 @@ spring:
     name: auth
 
   datasource:
-    url: "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://${AUTH_DB_URL:localhost}:${AUTH_DB_PORT:5432}/${AUTH_DB_NAME:postgres}
+    username: ${AUTH_DB_USERNAME:postgres}
+    password: ${AUTH_DB_USERNAME:""}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
-    database: h2
-    show-sql: false
+    database: postgresql
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
 
 management:
   metrics:
     export:
       influx:
         step: 5s
-        uri: http://localhost:8086
-        db: metrics
-        user-name: user
-        password: user
+        uri: ${AUTH_INFLUXDB_URI:http://localhost:8086}
+        db: ${AUTH_INFLUXDB_DB:metrics}
+        user-name: ${AUTH_INFLUXDB_USER_NAME:user}
+        password: ${AUTH_INFLUXDB_USER_PASSWORD:user}

@@ -1,0 +1,44 @@
+<!-- Use debug=true here if you want to see output from the appender itself -->
+<!-- Use line=true here if you want to see the line of code that generated this log -->
+<configuration>
+    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <!-- Log to LOGZIO only in 'prod' environment  -->
+    <springProfile name="prod">
+        <!-- Logging to LOGZIO -->
+        <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
+            <token>$LOGZIO_TOKEN</token>
+            <logzioUrl>$LOGZIO_URL</logzioUrl>
+            <logzioType>myType</logzioType>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+        </appender>
+        <!-- Logging to STDOUT -->
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{ISO8601} [%highlight(%-5level)] [%blue(%-10thread)] %yellow(%-35logger{35}): %msg%n%throwable</pattern>
+            </layout>
+        </appender>
+
+        <root level="info">
+            <!-- IMPORTANT: This line is required -->
+            <appender-ref ref="LogzioLogbackAppender"/>
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+    <!-- Only log to STDOUT -->
+    <springProfile name="!prod">
+        <!-- Logging to STDOUT -->
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{ISO8601} [%highlight(%-5level)] [%blue(%-10thread)] %yellow(%-35logger{35}): %msg%n%throwable</pattern>
+            </layout>
+        </appender>
+        <root level="info">
+            <!-- IMPORTANT: This line is required -->
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+</configuration>

@@ -1,32 +1,14 @@
 version: '3.8'
 
-# Used to build and run the program in a Docker Container and starts all necessary services
+# USED FOR DEVELOPMENT - Starts all the required services and configures them according to the 'dev.env' file
 # The config ('dev.env') sets the same environment variables for every service for easier config of dev. environment
-# Run with: DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.yml up --build
 
 services:
-
-  auth-app:
-    build:
-      context: .
-      dockerfile: experimental.Dockerfile
-    ports:
-      - 8080:8080
-    networks:
-      - postgres-network
-      - metrics-network
-    env_file:
-      - ./dev.env
-    depends_on:
-      - postgres
-      - influxdb
 
   postgres:
     image: postgres:12
     ports:
       - 5432:5432
-    networks:
-      - postgres-network
     volumes:
       - /var/lib/postgresql/data
     env_file:
@@ -58,7 +40,5 @@ services:
       - ./dev.env
 
 networks:
-  postgres-network:
-    driver: bridge
   metrics-network:
     driver: bridge

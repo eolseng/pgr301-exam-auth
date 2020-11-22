@@ -1,3 +1,12 @@
+## Kjøre programmet lokalt
+Applikasjonen bruker et par tjenester - `PostreSQL` for database, `InfluxDB` for metrics og `Grafana` for visualisering av metrics.
+Det følger derfor med to stk. Docker-Compose filer for bruk under utvikling eller for å kjøre programmet lokalt.
+### Kjøre programmet
+Kjør kommandoen `docker-compose -f docker-compose up` for å bygge og starte selve programmet i en Docker Container sammen med alle nødvendige tjenester.
+
+### Utvikling / dev
+Kjør kommandoen `docker-compose -f docker-compose-dev.yml up` for å starte alle nødvendige tjenester.
+
 ## Oppsett for pushing til Travis-CI
 For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Container Registry trengs følgende:
 1. Lag en `Service Account` for Travis-CI
@@ -67,3 +76,6 @@ Data lagres i tabellen `beer.kegs.fill.all`
 
 ## Simulert aktivitet
 Programmet simulerer aktivitet for å gi data til logging og metrics. Denne aktiviteten kan deaktiveres ved å kommentere ut innholdet i eller slette filen `no/eolseng/pgr301examauth/SimulateActivity.kt`.
+
+## Diverse
+* [Grunnet en feil i SpringBoot 2.4](https://github.com/spring-projects/spring-boot/issues/24192) (gjelder også 2.3) skrives det mange loggmeldinger av typen `Skipping unloadable jar file: file:/workspace/XXXjar` ved oppstart av Docker containeren. Dette har ingen påvirkning på selve programmet.

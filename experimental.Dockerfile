@@ -37,8 +37,8 @@ WORKDIR app
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 # Copy over the different layers of the .jar
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/application/ ./
+COPY --from=builder app/dependencies/ ./
+COPY --from=builder app/snapshot-dependencies/ ./
+COPY --from=builder app/spring-boot-loader/ ./
+COPY --from=builder app/application/ ./
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
