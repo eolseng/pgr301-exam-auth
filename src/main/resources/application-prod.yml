@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://${AUTH_DB_URL}/${AUTH_DB_NAME}
     username: ${AUTH_DB_USERNAME}
-    password: ${AUTH_DB_USERNAME}
+    password: ${AUTH_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
