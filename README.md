@@ -1,11 +1,16 @@
 ## Kjøre programmet lokalt
 Applikasjonen bruker et par tjenester - `PostreSQL` for database, `InfluxDB` for metrics og `Grafana` for visualisering av metrics.
-Det følger derfor med to stk. Docker-Compose filer for bruk under utvikling eller for å kjøre programmet lokalt.
-### Kjøre programmet
-Kjør kommandoen `docker-compose -f docker-compose up` for å bygge og starte selve programmet i en Docker Container sammen med alle nødvendige tjenester.
+Det følger derfor med to stk. Docker-Compose filer for bruk under utvikling og for å kjøre programmet lokalt med simulert aktivitet.
 
+### Lokalt med simulert aktivitet
+Ved start på denne måten kjøres det simuleringer av aktivitet i applikasjonen som produserer metrikk som kan observeres i Grafana.
+* Kjør kommandoen `sudo bash ./scripts/start_local`, evt. `DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.yml up --build`, for å starte programmet med alle tilknyttede tjenester.
+* Det benyttes eksperimentelle funksjoner i Docker for å cache `.m2/`-mappen ved bygging, slik at man raskt får bygd imaget ved små endringer. Dette krever Docker vesjon 18.09 eller høyere.
+* Kan kjøres uten eksperimentelle funksjoner ved å endre `auth-app.build.dockerfile` fra `experimental.Dockerfile` til bare `Dockerfile`.
+* Kan skru av simulert aktivitet ved å fjerne "simulation" under `auth-app.environment.SPRING_PROFILES_ACTIVE` i docker-compose filen.
 ### Utvikling / dev
-Kjør kommandoen `docker-compose -f docker-compose-dev.yml up` for å starte alle nødvendige tjenester.
+* Kjør kommandoen `sudo bash ./scripts/start_dev_services`, evt. `docker-compose -f docker-compose-dev.yml up` for å starte alle nødvendige tjenester.
+* Start så `src/test/kotlin/no/eolseng/pgr301examauth/LocalApplicationRunner.kt` for å starte programmet med `dev` profil som skrur på loggføring mot InfluxDB og kobler seg på PostgreSQL.
 
 ## Oppsett for pushing til Travis-CI
 For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Container Registry trengs følgende:
@@ -19,8 +24,6 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
    travis encypt-file --pro gcp_keyfile.json --add
    travis encrypt --pro GCP_PROJECT_ID="[GCP Prosjektets ID]" --add
    travis encrypt --pro GCP_REGISTRY_HOSTNAME="[GCP Container Registry sitt hostnavn]" --add
-   travis encrypt --pro logzio_token=[Token for Logz.io-bruker] --add
-   travis encrypt --pro logzio_url=[Listener URL for Logz.io] --add
     ```
    NB.: Krever pålogget bruker på Travis-CI sin CLI
    
@@ -32,6 +35,17 @@ For at Travis-CI skal kunne bygge og publisere et Docker Image til Google Contai
 Progammet bruker `Micrometer` til å samle metrikk som lagres i `InfluxDB`. Disse kan enkelt visualiseres i `Grafana` ved å importere innholdet i `grafana/dashboard.json`.
 
 ![Grafana Dashboard](./docs/Beercentage%20Grafana%20Dashboard.png)
+### Oppsett av Grafana
+1. Naviger til `http://localhost:3000`
+2. Logg inn med `Username: admin | Password: admin`
+3. Trykk på "Add your first data source" og velg "InfluxDB"
+4. Sett URL til `http://influxdb:8086`
+5. Sett "Database" til `metrics`, "User" til `user` og "Password" til `user`
+6. Trykk "Save & Test"
+7. Naviger til `http://localhost:3000/dashboard/import`
+8. Trykk på "Upload JSON file"
+9. Naviger til og velg `grafana_dashboard.json` som ligger i prosjektets rot-mappe og trykk "Import"
+10. Du ser nå et ferdigkonfigurert dashboard for applikasjonen som fylles med data ved bruk.
 
 ### Counter
 `Counter` metrikk blir brukt til å samle statistikk på antall "sipper" som er blitt forsøkt og utfallet av disse.
@@ -74,8 +88,6 @@ Data lagres i tabellen `beer.kegs.avg`.
 LongTaskTimeren opprettes i `no/eolseng/pgr301examauth/beer/BreweryScheduling.kt` under `BreweryScheduling` sin `refillAllKegs()` metode.
 Data lagres i tabellen `beer.kegs.fill.all`
 
-## Simulert aktivitet
-Programmet simulerer aktivitet for å gi data til logging og metrics. Denne aktiviteten kan deaktiveres ved å kommentere ut innholdet i eller slette filen `no/eolseng/pgr301examauth/SimulateActivity.kt`.
-
-## Diverse
-* [Grunnet en feil i SpringBoot 2.4](https://github.com/spring-projects/spring-boot/issues/24192) (gjelder også 2.3) skrives det mange loggmeldinger av typen `Skipping unloadable jar file: file:/workspace/XXXjar` ved oppstart av Docker containeren. Dette har ingen påvirkning på selve programmet.
+## Bugs
+* [Grunnet en feil i SpringBoot](https://github.com/spring-projects/spring-boot/issues/24192) skrives det mange loggmeldinger av typen `Skipping unloadable jar file: file:/workspace/XXXjar` ved oppstart av Docker containeren. Dette har ingen påvirkning på selve programmet.
+* Ved oppstart vil Gauge-måleren motta en null-verdi som produserer en feilmelding når det ikke eksisterer noen kegs.
