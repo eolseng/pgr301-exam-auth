@@ -15,6 +15,8 @@ services:
     networks:
       - postgres-network
       - metrics-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
     env_file:
       - ./dev.env
     depends_on:
