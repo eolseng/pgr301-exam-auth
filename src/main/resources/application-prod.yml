@@ -1,0 +1,6 @@
+# Disable InfluxDB metric export in 'prod' environment
+management:
+  metrics:
+    export:
+      influx:
+        enabled: false
