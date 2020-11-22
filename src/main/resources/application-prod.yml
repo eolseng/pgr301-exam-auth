@@ -11,3 +11,8 @@ spring:
         enabled: true
         instance-connection-name: ${AUTH_DB_URL}
         database-name: ${AUTH_DB_NAME}
+management:
+  endpoint:
+    health:
+      # Disable endpoint when hosted as a Docker Image on Cloud Run
+      enabled: false
