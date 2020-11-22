@@ -1,13 +1,10 @@
+# Connect to GCP Cloud SQL Instance in prod environment
 spring:
-  datasource:
-    url: jdbc:postgresql://${AUTH_DB_URL}/${AUTH_DB_NAME}
-    username: ${AUTH_DB_USERNAME}
-    password: ${AUTH_DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: validate
+  cloud:
+    gcp:
+      sql:
+        database-name: ${AUTH_DB_NAME}
+        instance-connection-name: ${AUTH_DB_INSTANCE_NAME}
 
 # Disable InfluxDB metric export in 'prod' environment
 management:

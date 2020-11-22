@@ -4,24 +4,3 @@ server:
 spring:
   application:
     name: auth
-
-  datasource:
-    url: jdbc:postgresql://${AUTH_DB_URL:localhost}:${AUTH_DB_PORT:5432}/${AUTH_DB_NAME:postgres}
-    username: ${AUTH_DB_USERNAME:postgres}
-    password: ${AUTH_DB_PASSWORD:""}
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: validate
-
-management:
-  metrics:
-    export:
-      influx:
-        step: 5s
-        uri: ${AUTH_INFLUXDB_URI:http://localhost:8086}
-        db: ${AUTH_INFLUXDB_DB:metrics}
-        user-name: ${AUTH_INFLUXDB_USER_NAME:user}
-        password: ${AUTH_INFLUXDB_USER_PASSWORD:user}
