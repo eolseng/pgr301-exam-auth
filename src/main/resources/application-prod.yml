@@ -1,3 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${AUTH_DB_URL}/${AUTH_DB_NAME}
+    username: ${AUTH_DB_USERNAME}
+    password: ${AUTH_DB_USERNAME}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+
 # Disable InfluxDB metric export in 'prod' environment
 management:
   metrics:
