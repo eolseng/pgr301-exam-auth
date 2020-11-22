@@ -3,6 +3,7 @@ spring:
   cloud:
     gcp:
       sql:
+        enabled: true
         database-name: ${AUTH_DB_NAME}
         instance-connection-name: ${AUTH_DB_INSTANCE_NAME}
 

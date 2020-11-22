@@ -13,3 +13,7 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: validate
+  cloud:
+    gcp:
+      sql:
+        enabled: false
