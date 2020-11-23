@@ -49,19 +49,23 @@ class WebSecurityConfig(
                 logoutSuccessHandler = HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)
             }
             authorizeRequests {
+                // Div
                 authorize("/", permitAll)
 
+                // Auth
                 authorize("/api/v1/auth/signup", permitAll)
                 authorize("/api/v1/auth/login", permitAll)
                 authorize("/api/v1/auth/logout", permitAll)
                 authorize("/api/v1/auth/user", authenticated)
 
+                // Beer
                 authorize("/api/v1/keg/**", authenticated)
                 authorize("/api/v1/mug/**", authenticated)
                 authorize("/api/v1/brew/**", authenticated)
                 authorize("/api/v1/tap/**", authenticated)
                 authorize("/api/v1/sip/**", authenticated)
 
+                // Block everything else
                 authorize(anyRequest, denyAll)
             }
             exceptionHandling {

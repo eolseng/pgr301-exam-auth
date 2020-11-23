@@ -1,6 +1,17 @@
+> Eksamen | PGR301 - DevOps i skyen | Kandidatnummer: 10004
+# DevOps - Applikasjon [![Build Status](https://travis-ci.com/eolseng/pgr301-exam-infrastructure.svg?branch=master)](https://travis-ci.com/eolseng/pgr301-exam-infrastructure) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5750635&Days=1&Design=1" height="20" /></a>
+
+Dette repositoriet er infrastruktur-biten av eksamenen min i faget **PGR301 - DevOps i skyen**.
+Prosjektet viser prinsipper innen for DevOps med CI/CD via **Travis-CI** med automatisert testing, bygging av **Docker Images** og pushing av disse til et **Docker Registry**.
+
+Applikasjonen var originalt basert på en SpringBoot Auth-applikasjon jeg ønsket å bruke til oppgaven, men så meg nødt til å utvide den grunnet oppgavens omfang.
+På bakgrunn av både eksamensperiode og covid-19 har jeg savnet sosialt samvær med venner, og for å få samlet metrikk og logg dedikerte jeg dermed utvidelsen til øl.
+
+* I `./docs`-mappen har jeg vedlagt en `Postman Collection` med HTTP-operasjoner mot tjenesten når den kjører lokalt. Dette kan importeres i Postman ved å klikke på "Import" knappen øverst i venstre hjørne.
+* 'LogBack' logger kun til konsoll ved kjøring lokalt, men er konfigurert til å logge mot `Logz.io` i produksjonsmiljøet.
+
 ## Kjøre programmet lokalt
-Applikasjonen bruker et par tjenester - `PostreSQL` for database, `InfluxDB` for metrics og `Grafana` for visualisering av metrics.
-Det følger derfor med to stk. Docker-Compose filer for bruk under utvikling og for å kjøre programmet lokalt med simulert aktivitet.
+Applikasjonen bruker `PostreSQL` for database, `InfluxDB` for metrics og `Grafana` for visualisering av metrics.
 
 ### Lokalt med simulert aktivitet
 Ved start på denne måten kjøres det simuleringer av aktivitet i applikasjonen som produserer metrikk som kan observeres i Grafana.
@@ -8,6 +19,7 @@ Ved start på denne måten kjøres det simuleringer av aktivitet i applikasjonen
 * Det benyttes eksperimentelle funksjoner i Docker for å cache `.m2/`-mappen ved bygging, slik at man raskt får bygd imaget ved små endringer. Dette krever Docker vesjon 18.09 eller høyere.
 * Kan kjøres uten eksperimentelle funksjoner ved å endre `auth-app.build.dockerfile` fra `experimental.Dockerfile` til bare `Dockerfile`.
 * Kan skru av simulert aktivitet ved å fjerne "simulation" under `auth-app.environment.SPRING_PROFILES_ACTIVE` i docker-compose filen.
+
 ### Utvikling / dev
 * Kjør kommandoen `sudo bash ./scripts/start_dev_services`, evt. `docker-compose -f docker-compose-dev.yml up` for å starte alle nødvendige tjenester.
 * Start så `src/test/kotlin/no/eolseng/pgr301examauth/LocalApplicationRunner.kt` for å starte programmet med `dev` profil som skrur på loggføring mot InfluxDB og kobler seg på PostgreSQL.
@@ -44,7 +56,7 @@ Progammet bruker `Micrometer` til å samle metrikk som lagres i `InfluxDB`. Diss
 6. Trykk "Save & Test"
 7. Naviger til `http://localhost:3000/dashboard/import`
 8. Trykk på "Upload JSON file"
-9. Naviger til og velg `grafana_dashboard.json` som ligger i prosjektets rot-mappe og trykk "Import"
+9. Naviger til og velg `grafana_dashboard.json` som ligger i prosjektets `./docs` og trykk "Import"
 10. Du ser nå et ferdigkonfigurert dashboard for applikasjonen som fylles med data ved bruk.
 
 ### Counter
