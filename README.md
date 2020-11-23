@@ -1,5 +1,5 @@
-> Eksamen | PGR301 - DevOps i skyen | Kandidatnummer: 10004
-# DevOps - Applikasjon [![Build Status](https://travis-ci.com/eolseng/pgr301-exam-infrastructure.svg?branch=master)](https://travis-ci.com/eolseng/pgr301-exam-infrastructure) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5750635&Days=1&Design=1" height="20" /></a>
+> Eksamen | PGR301 - DevOps i skyen | Kandidatnummer: 10004> Eksamen | [PGR301 - DevOps i skyen](https://old.kristiania.no/emnebeskrivelse-2-2/?kode=PGR301&arstall=2020&terminkode=H%C3%98ST) | [Oppgave](./docs/PGR301_exam_2020.pdf) | [App](https://github.com/eolseng/pgr301-exam-auth) | [Infrastucture](https://github.com/eolseng/pgr301-exam-infrastructure) | Kandidatnummer: 10004
+# DevOps - Applikasjon [![Build Status](https://travis-ci.com/eolseng/pgr301-exam-infrastructure.svg?branch=master)](https://travis-ci.com/eolseng/pgr301-exam-infrastructure) <img src="https://app.statuscake.com/button/index.php?Track=5750635&Days=1&Design=1" height="20" />
 
 Dette repositoriet er infrastruktur-biten av eksamenen min i faget **PGR301 - DevOps i skyen**.
 Prosjektet viser prinsipper innen for DevOps med CI/CD via **Travis-CI** med automatisert testing, bygging av **Docker Images** og pushing av disse til et **Docker Registry**.
@@ -7,6 +7,7 @@ Prosjektet viser prinsipper innen for DevOps med CI/CD via **Travis-CI** med aut
 Applikasjonen var originalt basert på en SpringBoot Auth-applikasjon jeg ønsket å bruke til oppgaven, men så meg nødt til å utvide den grunnet oppgavens omfang.
 På bakgrunn av både eksamensperiode og covid-19 har jeg savnet sosialt samvær med venner, og for å få samlet metrikk og logg dedikerte jeg dermed utvidelsen til øl.
 
+* Bygging og pushing av Docker Images til registry gjøres kun på `master`-branchen. Tester kjører på alle.
 * I `./docs`-mappen har jeg vedlagt en `Postman Collection` med HTTP-operasjoner mot tjenesten når den kjører lokalt. Dette kan importeres i Postman ved å klikke på "Import" knappen øverst i venstre hjørne.
 * 'LogBack' logger kun til konsoll ved kjøring lokalt, men er konfigurert til å logge mot `Logz.io` i produksjonsmiljøet.
 
