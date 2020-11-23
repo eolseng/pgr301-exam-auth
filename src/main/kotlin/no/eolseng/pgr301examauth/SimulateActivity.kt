@@ -43,6 +43,7 @@ class TestDataInsertion(
 }
 
 @Component
+@Profile("simulation")
 class TestDataActivity(
         private val userRepo: UserRepository,
         private val kegRepo: KegRepository,
