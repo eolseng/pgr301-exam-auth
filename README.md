@@ -1,5 +1,5 @@
 > Eksamen | [PGR301 - DevOps i skyen](https://old.kristiania.no/emnebeskrivelse-2-2/?kode=PGR301&arstall=2020&terminkode=H%C3%98ST) | [Oppgave](./docs/PGR301_exam_2020.pdf) | [App](https://github.com/eolseng/pgr301-exam-auth) | [Infrastucture](https://github.com/eolseng/pgr301-exam-infrastructure) | Kandidatnummer: 10004
-# DevOps - Applikasjon [![Build Status](https://travis-ci.com/eolseng/pgr301-exam-infrastructure.svg?branch=master)](https://travis-ci.com/eolseng/pgr301-exam-infrastructure) <img src="https://app.statuscake.com/button/index.php?Track=5750635&Days=1&Design=1" height="20" />
+# DevOps - Applikasjon [![Build Status](https://travis-ci.com/eolseng/pgr301-exam-auth.svg?branch=master)](https://travis-ci.com/eolseng/pgr301-exam-auth) <img src="https://app.statuscake.com/button/index.php?Track=5750635&Days=1&Design=1" height="20" />
 
 Dette repositoriet er infrastruktur-biten av eksamenen min i faget **PGR301 - DevOps i skyen**.
 Prosjektet viser prinsipper innen for DevOps med CI/CD via **Travis-CI** med automatisert testing, bygging av **Docker Images** og pushing av disse til et **Docker Registry**.
